@@ -55,6 +55,6 @@ VOLUME ["/etc/ceph"]
 EXPOSE 80
 EXPOSE 443
 
-WORKDIR /var/www
+WORKDIR /opt/radosgw/
 CMD ["start"]
 ENTRYPOINT ["/opt/radosgw/run.sh"]
