@@ -4,6 +4,10 @@ FROM ubuntu:trusty
 MAINTAINER acaleph "admin@acale.ph"
 
 RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty universe' >> /etc/apt/sources.list
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse' >> /etc/apt/sources.list
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse' >> /etc/apt/sources.list
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty-security multiverse' >> /etc/apt/sources.list
+
 # make sure the package repository is up to date
 RUN apt-get update
 
