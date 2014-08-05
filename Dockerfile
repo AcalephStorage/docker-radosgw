@@ -40,7 +40,7 @@ RUN a2enmod rewrite
 RUN a2enmod fastcgi
 ADD ./rgw.conf /etc/apache2/sites-available/rgw.conf
 RUN a2ensite rgw.conf
-RUN a2dissite default
+# RUN a2dissite default
 
 RUN mkdir -p /var/log/ceph
 RUN mkdir -p /var/lib/ceph/radosgw
