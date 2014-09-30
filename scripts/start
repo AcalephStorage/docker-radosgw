@@ -7,7 +7,7 @@ start() {
   mkdir -p /var/lib/ceph/radosgw/`hostname -s`
 
   echo "---> Start Foreman"
-  /usr/local/bin/forego $*
+  /usr/local/bin/forego start $*
 }
 
 # sudo radosgw-admin user create --uid acaleph --display-name "Acaleph Admin" --email admin@acale.ph --caps "users=*;metadata=*"`
