@@ -46,7 +46,7 @@ RUN a2dissite 000-default
 RUN mkdir -p /var/log/ceph
 RUN mkdir -p /var/lib/ceph/radosgw
 
-ADD ./config/start /opt/radosgw/start
+ADD ./scripts/start /opt/radosgw/start
 ADD ./config/Procfile /opt/radosgw/Procfile
 
 VOLUME ["/etc/ceph", "/etc/apache2/ssl"]
