@@ -3,6 +3,13 @@
 FROM ubuntu:trusty
 MAINTAINER acaleph "admin@acale.ph"
 
+# Ensure UTF-8
+RUN locale-gen en_US.UTF-8
+ENV LANG       en_US.UTF-8
+ENV LC_ALL     en_US.UTF-8
+
+ENV PYTHONIOENCODING utf_8
+
 RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty universe' >> /etc/apt/sources.list
 RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse' >> /etc/apt/sources.list
 RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse' >> /etc/apt/sources.list
@@ -23,38 +30,31 @@ RUN apt-get update
 RUN apt-get install ceph-common apache2 libapache2-mod-fastcgi radosgw -y
 RUN apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
-# Ensure UTF-8
-RUN locale-gen en_US.UTF-8
-ENV LANG       en_US.UTF-8
-ENV LC_ALL     en_US.UTF-8
-
-ENV PYTHONIOENCODING utf_8
-
-RUN pip install honcho
+RUN wget https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego -O /usr/local/bin/forego && chmod 0744 /usr/local/bin/forego
 
 ADD ./s3gw.fcgi /var/www/s3gw.fcgi
 RUN chmod 555 /var/www/s3gw.fcgi
 
-ADD ./httpd.conf /etc/apache2/httpd.conf
+ADD ./config/httpd.conf /etc/apache2/httpd.conf
 RUN a2enmod rewrite
 RUN a2enmod fastcgi
-ADD ./rgw.conf /etc/apache2/sites-available/rgw.conf
+RUN a2enmod ssl
+ADD ./config/rgw.conf /etc/apache2/sites-available/rgw.conf
 RUN a2ensite rgw.conf
 RUN a2dissite 000-default
 
 RUN mkdir -p /var/log/ceph
 RUN mkdir -p /var/lib/ceph/radosgw
 
-ADD ./run.sh /opt/radosgw/run.sh
-RUN chmod 777 /opt/radosgw/run.sh
+ADD ./config/start /opt/radosgw/start
+ADD ./config/Procfile /opt/radosgw/Procfile
 
-ADD ./Procfile /opt/radosgw/Procfile
-
-VOLUME ["/etc/ceph"]
+VOLUME ["/etc/ceph", "/etc/apache2/ssl"]
 
 EXPOSE 80
 EXPOSE 443
 
 WORKDIR /opt/radosgw/
+
 CMD ["start"]
-ENTRYPOINT ["/opt/radosgw/run.sh"]
+ENTRYPOINT ["/opt/radosgw/start"]

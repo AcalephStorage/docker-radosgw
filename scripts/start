@@ -1,0 +1,42 @@
+#!/bin/bash
+
+start() {
+  echo "---> Starting RadosGW"
+  
+  echo "----> Create RGW hostname directory"
+  mkdir -p /var/lib/ceph/radosgw/`hostname -s`
+
+  echo "---> Start Foreman"
+  /usr/local/bin/forego $*
+}
+
+# sudo radosgw-admin user create --uid acaleph --display-name "Acaleph Admin" --email admin@acale.ph --caps "users=*;metadata=*"`
+admin() {
+  radosgw-admin $*
+}
+
+
+health() {
+  echo "OK - Health check to be implemented"
+  exit 0
+}
+
+run_help() {
+  echo "The following commands are available:"
+  echo "start   - Runs Influxdb"
+  echo "admin - Runs radosgw-admin"
+  echo "health - Returns health of the influxdb service"
+}
+
+
+main() {
+  set -eo pipefail
+  case "$1" in
+  start)           shift; start $@;;
+  admin)         shift; admin $@;;
+  health)            health;;
+  *)               run_help;;
+  esac
+}
+
+main "$@"
