@@ -42,7 +42,7 @@ ADD ./config/Procfile /opt/radosgw/Procfile
 
 VOLUME ["/etc/ceph", "/etc/apache2/ssl"]
 
-EXPOSE 80 443
+EXPOSE 443
 
 WORKDIR /opt/radosgw/
 
