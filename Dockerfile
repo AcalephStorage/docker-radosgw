@@ -31,6 +31,7 @@ ADD ./config/httpd.conf /etc/apache2/httpd.conf
 RUN a2enmod rewrite
 RUN a2enmod fastcgi
 RUN a2enmod ssl
+RUN sed -i "s/SSLProtocol all.*/SSLProtocol all -SSLv2 -SSLv3/" /etc/apache2/mods-enabled/ssl.conf
 ADD ./config/rgw.conf /etc/apache2/sites-available/rgw.conf
 RUN a2ensite rgw.conf
 RUN a2dissite 000-default
