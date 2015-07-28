@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y software-properties-common build-essent
 
 # Ceph repo
 RUN wget -q -O- 'https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc' | apt-key add -
-RUN echo deb http://ceph.com/debian-firefly/ $(lsb_release -sc) main | tee /etc/apt/sources.list.d/ceph.list
+RUN echo deb http://ceph.com/debian-hammer/ $(lsb_release -sc) main | tee /etc/apt/sources.list.d/ceph.list
 RUN apt-get update
 
 # INSTALL SYSTEM DEPENDENCIES
